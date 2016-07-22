@@ -1,0 +1,371 @@
+<section class="home_section" id="homeSection">
+    <div class="row subheader">
+        <div class="col-xs-9" style="padding-left:0px;height:100%;">
+            <div data-ng-click="showLeft($event)" class="subheader_span" style=""><i class="fa fa-bars"></i> {{subheaderTitle | capitalize}}</div>
+        </div>
+        <div id="downloadIconWrap" class="col-xs-2" ng-click="myfunction()">
+            <i class="fa fa-archive"></i>
+        </div>
+        <div id="commentIconWrap" class="col-xs-2" ng-click="toggleComments()">
+            <i class="fa fa-comment-o" aria-hidden="true"></i>
+        </div>
+
+        <div class="col-xs-1 full_height">
+            <div class="refresh_icon" ng-click="getData()"> <i class="fa fa-refresh"></i></i>
+            </div>
+            <!--            <input type="text" id="searchInput" placeholder="searchtext"><button data-ng-click="search()">go</button>-->
+            <!--
+            <ul class="toolbar clearfix">
+
+					<li><input type="search" id="search" data-ng-model="searchText" placeholder="What are you looking for?"></li>
+					<li><button type="submit" ng-click="search()" id="btn-search"><i class="fa fa-search fontawesome-search"></i></button></li>
+
+				</ul>
+-->
+
+        </div>
+    </div>
+    <div id="downloadDropdown" class="animated slideInDown dropdown-content">
+        <div class="notification_header">Downloads</div>
+        <div class="notify_wrap" ng-if="fileEntry.length">
+            <!--     <div class="not_clear" ng-click="deleteAll()">Clear All</div>-->
+            <div ng-repeat="download in fileEntry">
+                <div class="download_data">
+                    <div class="name" ng-click="openDocument(download.nativeURL)">
+                        {{download.name}}</br><span> {{download.meetingName}}</span>
+                    </div>
+                    </br>
+
+
+                    <div ng-click="deleteFile(download.nativeURL,$index)" class="notify_close"><i class="fa fa-trash-o"></i></div>
+                </div>
+
+            </div>
+
+        </div>
+        <div style="" class="noData" ng-if="!fileEntry.length">No Offline documents</div>
+
+    </div>
+    <div id="commentsDropdown" class="animated slideInDown dropdown-content">
+        <div class="commentsHeader">Comments</div>
+        <div class="notify_wrap" ng-if="commentsEntry.length">
+            <!--     <div class="not_clear" ng-click="deleteAll()">Clear All</div>-->
+            <div ng-repeat="comments in commentsEntry">
+                <div class="download_data">
+                    <div class="name" ng-click="openComment(comments)">
+                        {{comments.meetingName}}</br><span> {{comments.comments}}</span>
+                    </div>
+                    </br>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div style="" class="noData" ng-if="!commentsEntry.length">No Saved Comments</div>
+
+    </div>
+    <div id="home_container" class="row margin_allign full_height" style="margin-top:77px;">
+        <div class="col-xs-4 meeting_nav" ng-hide="showDoc">
+            <div class="row margin_allign">
+                <aside class="sidebar">
+                    <nav class="sidebar-nav">
+                        <ul side-menu="menus" id="menu2" class="metismenu">
+                            <li ng-repeat="item in meeting" on-finish-render="ngRepeatFinished">
+                                <a id="{{$index}}">
+                                    <div class="sidemenu_item_text">{{item.SMNameOWSTEXT}}</div>
+                                    <div class="sidemenu_chevron fa chevron"></div>
+                                </a>
+                                <ul id="ul_{{$index}}">
+                                    <li ng-repeat="submenu in item.Days" data-ng-click="changeDate($parent.$index,$index);toggleMeetingObject.item =$index"><a ng-class="{'list_active' : toggleMeetingObject.item == $index}">{{submenu.date | amTimezone: meetingTimezone | amDateFormat:'MMMM Do, YYYY'}} | {{submenu.startTime |amTimezone: meetingTimezone |  amDateFormat: 'H:mm ' }} - {{submenu.endTime |amTimezone: meetingTimezone |  amDateFormat: 'H:mm '}}</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
+                <div class="time-zone-tab" ng-class="{'time_active':timezoneOn}" ng-click="changeTimezone()">{{timeZoneText}}</div>
+            </div>
+        </div>
+        <!--        Agenda List-->
+        <div class="col-xs-4 agenda_nav" ng-hide="showDoc">
+            <div class="row full_height">
+                <div class="col-xs-12 agenda_row" data-ng-click="changeAgenda($index,$event);toggleObject.item = $index" ng-repeat="item in agenda_arr" data-ng-class="{'agenda_row_active' : toggleObject.item == $index}">
+                    <div class="row agenda_row_item">
+                        <div class="col-xs-4 agenda_row_item_col1">
+                            <div ng-class="{'paper_clip_active':item.Attachments}" style="padding-right: 12%;">
+                                <i class="fa fa-paperclip"></i>
+                            </div>
+                            {{ item.SMStartTime |amTimezone: meetingTimezone | amDateFormat: 'H:mm '}}
+                        </div>
+                        <div class="col-xs-4 agenda_row_item_col2">
+                            <div class="circleBase type2" data-ng-class="{'agenda_active' : toggleObject.item == $index}"></div>
+                        </div>
+                        <div class="col-xs-4 agenda_row_item_col3">
+                            <div ng-if="item.SMAType == 'Regular'" class="meeting_activity">{{ item.SMASession}}</div>
+                            <div id="meet_break" ng-if="item.SMAType !='Regular'">
+                                <div>
+                                    <i class="" ng-class="item.SMAType =='Break'?'fa fa-coffee':'fa fa-cutlery'"></i> {{ item.SMASession}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--        Agenda List-->
+        <!--        Agenda descption -->
+        <div class="col-xs-4 agenda_detail_nav" ng-hide="showDoc">
+            <div class="row margin_allign" style="margin-top: 10%;" ng-if="show_details">
+                <div class="col-xs-12 agenda_detail_row1">
+                    {{activity}}
+                </div>
+                <div class="col-xs-12 agenda_detail_row2 " ng-if="!break">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {{moderator}} </br>
+                            Venue- {{venue}}
+                        </div>
+                        <!--
+                        <div class="col-xs-6">
+                            <span class="mom_create_btn" data-ng-click="hideShowDiv(true, false, false)">Take Notes</span>
+                        </div>
+-->
+                    </div>
+                </div>
+                <div class="col-xs-12 agenda_detail_row3 " ng-if="!break;isNull(description)">
+                    {{description}}
+                </div>
+                <div class="col-xs-12 no_padding home_tab_wrap" ng-if="!break">
+                    <div class="tabs">
+                        <ul class="tab-links">
+                            <li ng-class="{tabactive:tab1}"><a data-ng-click="changeTab('tab1')" ng-if="participants.length">People</a></li>
+                            <li ng-class="{tabactive:tab2}"><a data-ng-click="changeTab('tab2')" ng-if="attachments.length">Documents</a></li>
+                        </ul>
+                        <div class="tab-content home-tab">
+                            <div id="peopleTab" class="tab" ng-class="{active:tab1}" ng-if="participants.length">
+                                <div class="row margin_allign home_tab_row" style="" ng-repeat="participant in participants">
+                                    <div class="col-xs-10">
+                                        {{participant.name}}
+                                    </div>
+                                    <!--
+                                    <div class="col-xs-2" data-ng-click="sendMail($index)">
+                                        <span><i class="fa fa-envelope"></i></span>
+                                    </div>
+-->
+                                </div>
+                                <!--                                <div class="row margin_allign home_tab_row" ng-if="!participants.length">No Participants</div>-->
+                            </div>
+                            <div id="docTab" class="tab" ng-class="{active:tab2}">
+                                <div class="row margin_allign home_tab_row" style="" ng-repeat="attachFile in attachments" ng-if="attachments.length">
+                                    <div ng-click="" class="col-xs-1" style="width:8%;">
+                                        <span ng-show="checkCommentedDoc(attachFile)"><i class="fa fa-comment-o" aria-hidden="true"></i></span>
+                                    </div>
+                                    <div ng-click="" class="col-xs-2 " style="width:16%;">
+                                        <span><img class=" doc_img" ng-src="{{getDoctype(attachFile.FileName )}}"></img></span>
+                                    </div>
+                                    <div class="col-xs-4" style="width:60%;word-wrap: break-word;" data-ng-click="openAttach($index)">
+                                        {{attachFile.FileName | split:'.':0}}
+                                    </div>
+                                    <div class="col-xs-2" style="width:8%;" ng-if="!isDownloaded($index)" ng-click="fileDownload($index);hideDownload=!hideDownload">
+                                        <span ng-if="!hideDownload"><i class="fa fa-download"></i></span>
+                                        <span ng-if="hideDownload" class="download_spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                                        <!--
+<div round-progress max="maxPro" current="currentPro[$index]" color="#45ccce" bgcolor="#eaeaea" radius="100" stroke="20" semi="false" rounded="true" clockwise="true" responsive="false" duration="800" animation="easeInOutQuart" animation-delay="0">
+</div>
+-->
+                                    </div>
+                                    <div class="col-xs-2" id="readEye" ng-if="isDownloaded($index)" style="width:8%;" data-ng-click="openAttach($index)">
+                                        <span><i class="fa fa-eye"></i></span>
+                                    </div>
+                                    <div class="col-xs-2" data-ng-click="openAttach($index)" style="width:8%;" ng-if="isInNotification(attachFile)">
+                                        <span><i class="fa fa-comments-o"></i></span>
+                                    </div>
+
+                                </div>
+                                <!--                                <div class="row margin_allign home_tab_row" ng-if="!attachments.length">No Documents Attached</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 no_padding home_tab_wrap" ng-if="break">
+                    <i class="" ng-class="activity =='Break'?'fa fa-coffee':'fa fa-cutlery'"></i> {{breakTime | amTimezone: meetingTimezone | amDateFormat: 'h:mm a'}}
+                </div>
+            </div>
+            <!--        Agenda descption -->
+            <!--MOM Create-->
+            <div class="row margin_allign" style="margin-top: 10%;" ng-if="createMOM">
+                <div class="col-xs-12 agenda_detail_row1 ">
+                    {{activity}}
+                </div>
+                <div class="col-xs-12 agenda_detail_row2 ">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            Create Your Notes Here
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 mom_row">
+                    Discussion Points
+                    <br>
+                    <textarea id="agenda_note" class="mom_notes" data-ng-model="discussion_points" placeholder="Enter Meeting title here"></textarea>
+                </div>
+                <div class="col-xs-12 mom_row flex_disp">
+                    <div class="btn_add_mom" data-ng-click="hideShowDiv(false, false, true)">Cancel</div>
+                    <div data-ng-click="saveMOM()" class="btn_add_mom">Save Notes</div>
+                    <div class="btn_add_mom btn_active">Send Notes</div>
+                </div>
+            </div>
+            <!--MOM Create-->
+            <!--            Show Mom -->
+            <div class="row margin_allign" style="margin-top: 10%;" ng-if="show_mom">
+                <div class="col-xs-12 show_mom_row1 ">
+                    {{activity}}
+                </div>
+                <div class="col-xs-12 mom_row" style="border-bottom: 1px solid #f1f1f1; color: #b2b2b2;">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            Your Notes
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 mom_row ">
+                    {{agenda_arr[agendaIndex].SMADiscussionPoints}}
+                </div>
+                <div class="col-xs-12 mom_row action_item_wrap">
+                    <!--                    Action Items-->
+                    <!--                    <div class="col-xs-12 mom_row action_item_show " ng-repeat="item in show_Action">-->
+                    <!--                        {{$index+1}}. {{item}}-->
+                    <!--                    </div>-->
+                    <div class="col-xs-12 mom_row add_action_item" data-ng-click="hideShowDiv(true, false, false);">
+                        <span><i class="fa fa-plus"></i></span> Add another note
+                    </div>
+                </div>
+                <div class="col-xs-12 mom_row flex_disp">
+                    <div class="btn_add_mom" data-ng-click="hideShowDiv(false, false, true)">Cancel</div>
+                    <div class="btn_add_mom">Save Notes</div>
+                    <div class="btn_add_mom btn_active">Send Notes</div>
+                </div>
+            </div>
+        </div>
+        <!--            Show Mom -->
+        <!-- Show document -->
+        <div class="col-xs-12 document_view" style="" ng-show="showDoc">
+            <div class="row full_height">
+                <div class="row margin_allign close_doc" data-ng-click="closeDoc()">
+                    <div class="col-xs-12">
+                        {{attach_heading}}
+                    </div>
+                    <div class="closeFa">
+                        <i class="fa fa-times"></i>
+                    </div>
+                </div>
+                <div id="page" ng-show="isPDF">
+                    <!--                    <viewer></viewer>-->
+                </div>
+                <div ng-show="!isPDF" id="panzoom" class="scroll-wrapper">
+                    <!--                    <iframe id="attach_iframe" allowtransparency="true" style="border: 0px;" src="{{urlContent}}"></iframe>-->
+                </div>
+
+                <div class="range_wrap" ng-show="!isPDF">
+                    <input type="range" class="zoom-range">
+                </div>
+                <div id="doc" class="row margin_allign ">
+                    <div class="col-xs-2" ng-click="fileDownload()">
+                        <i class="fa fa-download"></i> Download
+                    </div>
+                    <div class="col-xs-2" ng-click="toggleModal()">
+                        <i class="fa fa-share" style="display: inline-flex;width: 100%;" ng-if="isPDF"><div style="padding-top: 0px;padding-left: 9%;">Share</div></i>
+                    </div>
+                    <div class="col-xs-5">
+                    </div>
+                    <div class="col-xs-3 " ng-if="!isPDF" ng-class="{'note_active':rightVisible}" data-ng-click="showRight($event)">
+                        <i class="fa fa-comments" ng-class="{'note_active':rightVisible}"></i> Comments
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Show document -->
+        <!--        Html tag for left slide menu and notes-->
+        <mymenu visible="leftVisible" alignment="left">
+            <div class="inner_menu">
+                <div class="inner_menu_item dash_go" ng-class="{inner_menu_active:dash}">
+                    <div class="inner_menu_icons"><i class="fa fa-home " ng-class="{fa_active:dash}"></i></div>
+                    <div class="inner_menu_text">Home</div>
+                </div>
+                <div class="inner_menu_item current_go" ng-class="{inner_menu_active:current}">
+                    <div class="inner_menu_icons"><i class="fa fa-comments " ng-class="{fa_active:current}"></i></div>
+                    <div class="inner_menu_text">Current Meetings</div>
+                </div>
+                <div class="inner_menu_item future_go" ng-class="{inner_menu_active:future}">
+                    <div class="inner_menu_icons"><i class="fa fa-flag" ng-class="{fa_active:future}"></i></div>
+                    <div class="inner_menu_text">Upcoming Meetings</div>
+                </div>
+                <div class="inner_menu_item past_go" ng-class="{inner_menu_active:past}">
+                    <div class="inner_menu_icons"><i class="fa fa-star" ng-class="{fa_active:past}"></i></div>
+                    <div class="inner_menu_text">Past Meetings</div>
+                </div>
+            </div>
+        </mymenu>
+        <mymenu visible="rightVisible" alignment="right" docnotes="docnotes">
+            <div id="note" class="note_area animated  slideInRight">
+                <div class="note_area_header">
+                    <div class="row margin_allign">
+                        <div class="col-xs-10">
+                            Add your personal comments
+                        </div>
+                        <div class="col-xs-2" data-ng-click="closeNote()">
+                            <i class="fa fa-times"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row toggleNote">
+                    <div class="col-xs-6 notebtn" ng-class="{'commentactive':savedNote}" ng-click="toggleNote()">
+                        Saved Notes
+                    </div>
+                    <div class="col-xs-6 notebtn" ng-class="{'commentactive':!savedNote}" ng-click="toggleNote()">
+                        <span ng-if="draft"><i class="fa fa-exclamation" aria-hidden="true"></i></span> Draft Notes
+                    </div>
+                </div>
+                <div class="note_area_text" ng-show="savedNote">
+                    <div class="commentsBy" ng-if="commentsBy">{{commentsBy}}
+                    </div>
+                    <textarea class="full_height" id="docnote" data-ng-model="docnotes" placeholder="Enter Notes here"></textarea>
+                </div>
+                <div class="note_area_text" ng-show="!savedNote">
+                    <textarea class="full_height" id="draftnote" ng-disabled="disableText()" data-ng-model="draftComment" placeholder="Enter Notes here"></textarea>
+                </div>
+                <div class="note_area_footer">
+                    <div class="row margin_allign">
+                        <div class="col-xs-4" data-ng-click="savenote()">
+                            <i class="fa fa-floppy-o"></i> Save
+                        </div>
+                        <div class="col-xs-4" ng-click="toggleModal()">
+                            <i class="fa fa-share-alt"></i> Share
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mymenu>
+
+
+        <modal title="Share With Participants" visible="showModal">
+            <form role="form">
+                <div class="form-group-wrap">
+                    <div class="select_all" ng-click="checkAll()">
+                        <input id="check_all" type="checkbox" ng-model="selectedAll" />
+                        <label class="label_check" for="check_all">Select All</label>
+                    </div>
+
+                    <div class="form-group" ng-repeat="item in Attendees[0].SMAttendees.results">
+                        <div class="particpant_modal_wrap">
+                            <input name="group" type="checkbox" id="{{'check_'+$index}}" ng-model="item.Selected" />
+                            <label class="label_check" for="{{'check_'+$index}}">{{item.Title}}</label>
+                        </div>
+
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-default modal_btn " data-ng-click="share()">Share</button>
+            </form>
+        </modal>
+        <!--        Html tag for left slide menu and notes-->
+</section>

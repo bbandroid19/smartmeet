@@ -1,0 +1,218 @@
+.nav-left {
+    text-align: left;
+}
+
+.nav-right {
+    text-align: right;
+}
+.monthview-dateCell >div{
+    padding: 9%;
+}
+.monthview-primary-with-event>div{
+    background-color: #333;
+    color:#fff;
+/*    border-radius: 50%;*/
+/*    width: 48%;*/
+    padding: 2%;
+    text-align: center;
+    margin-left: 28%;
+    border-radius: 50%;
+    width: 23px;
+    height: 23px;
+}
+.monthview-selected > div{
+    background-color: #ffe600;
+    color: #333;
+    border-radius: 50%;
+    width: 60%;
+    font-size: 22px;
+    padding: 2%;
+    text-align: center;
+    margin-left: 28%;
+    margin-top: -7%;
+    -webkit-box-shadow: 0px 0px 3px 5px #ffe600;
+    -moz-box-shadow: 0px 0px 3px 5px #ffe600;
+    box-shadow: 0px 0px 3px 5px #ffe600;
+}
+.calendar-header>button, .calendar-header>button{
+    background-color: transparent; 
+    border-color: transparent;
+}
+.calendar-header>button>i, .calendar-header>button>i{
+    color: #c4c9d0;
+    font-size: 25px;
+   -webkit-text-stroke: 2px #f7f7f7;
+}
+
+.scrollable {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.table-fixed {
+    table-layout: fixed;
+}
+
+.no-event-label {
+    font-weight: bold;
+    color: darkgrey;
+    text-align: center;
+}
+
+.event-detail-container {
+       margin-top: 6%;
+}
+
+.event-detail {
+    cursor: pointer;
+text-overflow: ellipsis;
+overflow-y: auto;
+padding: 6%;
+font-size: 17px;
+}
+.event-detail-desc{
+ cursor: pointer;
+/*
+white-space: nowrap;
+text-overflow: ellipsis;
+*/
+overflow-y: auto;
+}
+
+.calendar-header {
+    text-align: center;
+    padding-top: 5px;
+    font-weight: bold;
+   color: #869099;
+    font-size: 18px;
+}
+
+.calendar-hour-column, .calendar-week-column {
+    width: 50px;
+}
+
+.calendar-navbar {
+    margin-bottom: 5px;
+}
+
+.calendar-event-wrap {
+    position: relative;
+    height: 100%;
+}
+
+.calendar-event {
+    position: absolute;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.calendar-event-inner {
+    overflow: hidden;
+    background-color: #3a87ad;
+    color: white;
+    height: 100%;
+    width: 100%;
+    padding: 2px;
+    line-height: 15px;
+}
+
+.calendar-cell {
+    padding: 0 !important;
+    height: 37px;
+}
+
+.monthview-primary-with-event {
+/*    background-color: #336799;*/
+    color: white;
+}
+
+.monthview-selected {
+/*   background-color: #FC1E1E;*/
+    color: white;
+}
+
+.monthview-current {
+    background-color: lightgrey;
+}
+
+.monthview-eventdetail-timecolumn {
+    overflow: hidden;
+background-color: #ffe600;
+color: #000;
+width: 76px;
+height: 63px;
+left: 5px;
+position: absolute;
+font-size: 28px;
+text-align: -webkit-right;
+padding: 2%;
+}
+
+.monthview-dateCell {
+    cursor: pointer;
+}
+
+.monthview-secondary-with-event {
+    background-color: #d9edf7;
+}
+
+.weekview-allday-label, .dayview-allday-label {
+    float: left;
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+    width: 50px;
+    border: 1px solid #ddd;
+    border-right-width: 0;
+}
+
+.weekview-allday-content-wrapper, .dayview-allday-content-wrapper {
+    margin-left: 50px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.weekview-header, .monthview-datetable {
+    margin-bottom: 0;
+}
+
+.weekview-header th {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.weekview-allday-table, .dayview-allday-table {
+    height: 50px;
+}
+
+.gutter-column {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+@media (max-width: 750px) {
+    .weekview-allday-label, .dayview-allday-label, .calendar-hour-column, .calendar-week-column {
+        width: 32px;
+    }
+
+    .table > tbody > tr > td.calendar-hour-column, .table > thead > tr > th.weekview-header-label {
+        padding-left: 0;
+        padding-right: 0;
+        font-size: 12px;
+    }
+
+    .weekview-allday-label, .dayview-allday-label {
+        line-height: inherit;
+    }
+
+    .weekview-allday-content-wrapper, .dayview-allday-content-wrapper {
+        margin-left: 32px;
+    }
+
+    .calendar-event-inner {
+        font-size: 12px;
+    }
+}
+

@@ -1,0 +1,127 @@
+<section ng-cloak ng-if="showSection" id="dashSection">
+    <div class="row subheader">
+        <div class="col-xs-11" style="padding-left:0px;height:100%;">
+            <div data-ng-click="showLeft($event)" class="subheader_span"><i class="fa fa-bars"></i></div>
+        </div>
+        <div class="col-xs-1 full_height">
+            <div class="refresh_icon" ng-click="getData()"> <i class="fa fa-refresh"></i></i>
+            </div>
+        </div>
+    </div>
+
+    <div ng-cloak class="row margin_allign full_height" style="margin-top:77px;">
+        <div class="col-xs-6 current_meetings">
+            <section class="calender_content">
+                <section class="calender_container">
+                    <section>
+                        <div class="well well-sm">
+                            <calendar ng-model="currentDate" calendar-mode="mode" event-source="eventSource" range-changed="reloadSource(startTime, endTime)" event-selected="onEventSelected(event)" time-selected="onTimeSelected(selectedTime)"></calendar>
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </div>
+        <div class="col-xs-6 new_and_archive">
+            <div class="tabs">
+                <ul class="tab-links" style="">
+                    <li ng-class="{tabactive:tab1}"><a href="#tab1" ng-click="changeTab('tab1')">Upcoming Meetings</a></li>
+                    <li ng-class="{tabactive:tab2}"><a href="#tab2" ng-click="changeTab('tab2')">Past Meetings</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab1" class="tab full_height" ng-class="{active:tab1}">
+                        <div class="row tab_content_row full_height">
+                            <div class="meeting_tab_wrap">
+                                <div ng-click="gotoHome($index,0,'future')" class="col-xs-12 upcoming_meeting_tab" ng-repeat="item in future_meeting">
+                                    <div class="row margin_allign">
+                                        <div class="col-xs-3">
+                                            <div class="date_card_2">
+                                                <span>{{item.SMStartDateOWSDATE | split:'T':0 | split:'-':1 | monthName }} </span>
+                                                <br>
+                                                <span class="date-card-day">{{item.SMStartDateOWSDATE | split:'T':0 | split:'-':2 }}</span>
+                                                <br>
+                                                <span>{{item.SMStartDateOWSDATE | split:'T':0 | split:'-': 0 }}</span>
+                                                <br>
+                                            </div>
+                                        </div>
+                                        <div class="colxs-9">{{item.SMNameOWSTEXT}}</div>
+                                        <span class="upcoming_meeting_moderator">{{item.SMOrganiserOWSUSER | split:'|':1}}</span>
+                                    </div>
+                                    <div class="col-xs-12 upcoming_meeting_desc" ng-if="isNull(item.SMDescriptionOWSMTXT)">{{ item.SMDescriptionOWSMTXT | limitTo: 100 }}{{item.SMDescriptionOWSMTXT.length > 100 ? '...' : ''}}</div>
+                                    <!--                                    <div class="col-xs-12" ng-click="gotoHome($index,0,'future')"><a>View Meeting</a></div>-->
+                                </div>
+                                <div class="col-xs-12 " ng-cloak ng-if="!future_meeting.length">
+                                    <div class="row margin_allign">
+                                        <div class="col-xs-12 NoMeetingImg">
+                                            <img src="images/NoUpcomingMeetings.png">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="upcoming_meeting_view_btn" ng-if="future_meeting.length" ng-click="gotoHome(0,0,'future')">View All</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab2" class="tab full_height" ng-class="{active:tab2}">
+                        <div class="row tab_content_row full_height">
+                            <div class="meeting_tab_wrap">
+                                <div class="col-xs-12 archive_meeting_tab" ng-repeat="item in past_meeting">
+                                    <div class="row margin_allign archive_row" ng-click="gotoHome($index,0,'past')">
+                                        <div class="col-xs-3">
+                                            <div class="archive_date">{{item.SMStartDateOWSDATE | split:'T':0}}</div>
+                                        </div>
+                                        <div class="col-xs-9">{{item.SMNameOWSTEXT}}</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 archive_meeting_tab" ng-cloak ng-if="!past_meeting.length">
+                                    <div class="row margin_allign">
+                                        <div class="col-xs-12 NoMeetingImg">
+                                            <img src="images/NoPastMeeting.png">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="upcoming_meeting_view_btn" ng-if="past_meeting.length" ng-click="gotoHome(0,0,'past')">View All</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <mymenu visible="leftVisible" alignment="left">
+        <div class="inner_menu">
+            <div class="inner_menu_item dash_go" ng-class="{inner_menu_active:dash}">
+                <div class="inner_menu_icons"><i class="fa fa-home " ng-class="{fa_active:dash}"></i></div>
+                <div class="inner_menu_text">Home</div>
+            </div>
+            <div class="inner_menu_item current_go" ng-class="{inner_menu_active:current}">
+                <div class="inner_menu_icons"><i class="fa fa-comments " ng-class="{fa_active:current}"></i></div>
+                <div class="inner_menu_text">Current Meetings</div>
+            </div>
+            <div class="inner_menu_item future_go" ng-class="{inner_menu_active:future}">
+                <div class="inner_menu_icons"><i class="fa fa-flag" ng-class="{fa_active:future}"></i></div>
+                <div class="inner_menu_text">Upcoming Meetings</div>
+            </div>
+            <div class="inner_menu_item past_go" ng-class="{inner_menu_active:past}">
+                <div class="inner_menu_icons"><i class="fa fa-star" ng-class="{fa_active:past}"></i></div>
+                <div class="inner_menu_text">Past Meetings</div>
+            </div>
+        </div>
+    </mymenu>
+    <modal title="Participants" visible="showModal">
+        <form role="form">
+            <div class="form-group-wrap">
+                <div class="form-group" ng-repeat="participant in participants">
+                    <div class="particpant_modal_wrap">
+
+                        <div>{{participant | split:'|':1}}</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </modal>
+</section>

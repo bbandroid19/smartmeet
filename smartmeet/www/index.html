@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app="smartmeetApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Application</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name=”apple-mobile-web-app-capable” content=”no”>
+    <meta name="format-detection" content="telephone=no">
+    <meta name=”apple-mobile-web-app-status-bar-style” content=”black”>
+
+    <script src="app/lib/scripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="cordova_plugins.js"></script>
+    <script src="app/lib/scripts/pdfjs/pdf.js"></script>
+    <link href="app/lib/scripts/pdfjs/viewer.css" rel="stylesheet" />
+    <script src="app/lib/scripts/pdfjs/compatibility.js"></script>
+    <script src="app/lib/scripts/pdfjs/l10n.js"></script>
+    <script src="app/lib/scripts/pdfjs/viewer.js"></script>
+
+    <script src="app/lib/scripts/annotator.1.2.10/annotator.min.js"></script>
+    <script src="app/lib/scripts/annotator.1.2.10/EYStorageAnnotator.js"></script>
+    <script src="app/lib/scripts/annotator.1.2.10/annotator.touch.min.js"></script>
+    <!--     <script src="app/lib/scripts/pdfjs/pdf.min.js"></script>-->
+    <script src="app/lib/scripts/showdown.js"></script>
+    <!-- injector:css -->
+    <link rel="stylesheet" href="app/lib/scripts/annotator.1.2.10/annotator.touch.css">
+    <link rel="stylesheet" href="app/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="app/lib/font-awesome.min.css">
+    <link rel="stylesheet" href="app/lib/swiper.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/ngProgress.css">
+    <link rel="stylesheet" href="app/modules/dashBoard/dashBoard.css">
+    <link rel="stylesheet" href="app/modules/home/home.css">
+    <link rel="stylesheet" href="app/lib/calendar.css">
+
+    <link href="app/lib/scripts/annotator.1.2.10/annotator.min.css" rel="stylesheet" />
+
+    <!--    <script>-->
+    <!--    console.log=function(){-->
+    <!--    }-->
+    <!--    </script>-->
+
+    <!-- endinjector -->
+</head>
+
+<body>
+    <loader></loader>
+    <header></header>
+    <div id="ngView" class="page{{pageclass}}" ui-view>
+
+    </div>
+
+    <script src="app/lib/angular.js"></script>
+    <script src="app/lib/calendar-tpls.js"></script>
+    <!-- injector:js -->
+
+
+    <script src="app/lib/angular-ios9-uiwebview.patch.js"></script>
+    <script src="app/lib/angular-touch.min.js"></script>
+    <script src="app/lib/fastclick.js"></script>
+    <script src="app/lib/angular-ui-router.min.js"></script>
+    <script src="app/lib/bootstrap.min.js"></script>
+    <script src="app/lib/ngprogress.min.js"></script>
+    <script src="app/lib/jquery.panzoom.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/router.js"></script>
+    <script src="app/lib/metismenu.js"></script>
+    <script src="app/lib/indexeddbshim.js"></script>
+    <script src="app/lib/swiper.min.js"></script>
+    <script src="app/lib/moment.js"></script>
+    <script src="app/lib/moment-timezone.js"></script>
+    <script src="app/lib/angular-moment.js"></script>
+    <script src="app/lib/roundProgress.min.js"></script>
+
+    <script src="app/modules/shared/services/service.js"></script>
+    <script src="app/modules/shared/services/dataService.js"></script>
+    <script src="app/modules/shared/services/dbService.js"></script>
+    <script src="app/modules/shared/filters/interpolate.js"></script>
+    <script src="app/modules/shared/filters/filter.js"></script>
+    <script src="app/modules/shared/factory/factory.js"></script>
+    <script src="app/modules/shared/directives/directives.js"></script>
+    <script src="app/modules/shared/services/cordovaService.js"></script>
+    <script src="app/modules/home/homeController.js"></script>
+    <script src="app/modules/dashBoard/dashBoardController.js"></script>
+    <script src="app/config-generated.js"></script>
+    <!-- endinjector -->
+</body>
+
+</html>
